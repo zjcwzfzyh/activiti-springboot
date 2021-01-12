@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上预约挂号系统</title>
+</head>
+<link rel="stylesheet" href="./styles/common.css">
+<link rel="stylesheet" href="./styles/index.css">
+<link rel="stylesheet" href="./styles/cssDoctor.css">
+<link rel="stylesheet" href="./styles/csslunbo.css">
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/xadmin.js"></script>
+<body>
+<div id="app">
+    <div class="top">
+        <div class="slideshow">
+            <div class="swiper-container" style="width: 100%;height: 350px;">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="./images/2.jpeg" height="350" width="1600"/>
+                    </div>
+                    <div class="swiper-slide"><img src="./images/3.jpeg" height="350" width="1600" />
+                    </div>
+                    <div class="swiper-slide"><img src="./images/4.jpeg" height="350" width="1600" />
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+    <div class="heng"></div>
+    <div class="nav">
+        <ul>
+            <li><a href="doctorReservationInformation.html">我的挂号</a></li>
+        </ul>
+        <div class="DR fr">
+            <div id="username">
+                <ul>
+                    <li>
+                        <span>欢迎您：</span>
+                        <span id="realDoctor">[[${session.doctor.name}]]</span>
+                        <button id="logout">注销退出</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="docId" th:value="${session.doctor.id}">
+    <div class="content clearfix">
+        <div class="LED fl">
+            <div class="list">
+                <div class="listTop">
+                    <div class="text">
+                        <img src="./images/megua.jpg" alt="">
+                        <span>我的挂号</span>
+                        <div class="enquiry">
+                            <div class="layui-input-inline">
+                                <select name="status" id="status">
+                                    <option value="">请选择状态</option>
+                                    <option value="1">待审批</option>
+                                    <option value="2">通过</option>
+                                    <option value="3">驳回</option>
+                                </select>
+                                <input class="btn1" type="button" id="search" value="搜索" style="width: 100px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="layui-hide" id="factoryTable" lay-filter="factoryTable"></table>
+                <script type="text/html" id="barDemo">
+                    {{# if(d.status != 1){ }}
+                    <a class="layui-btn layui-btn-sm layui-btn-disabled">审批</a>
+                    {{# }else{}}
+                    <a class="layui-btn layui-btn-sm"  lay-event="del">审批</a>
+                    {{#}}}
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loginInput"></div>
+
+<script type="text/javascript" src="./script/jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+        layui.use(['table', 'form'], function () {
+            var $ = layui.$,
+                table = layui.table,
+                form = layui.form;
+
+            $('#logout').on('click', function () {
+                $.ajax({
+                    url: '/doctor/logout',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            location.href = 'view?url=reception/doctorLoign';
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+            });
+
+            $('#search').on('click',function () {
+                factoryTable.reload({
+                    where: {
+                        status : $("#status").val(),
+                        docId: $('#docId').val()
+                    }
+                    , page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                });
+                return false;
+            });
+
+            var factoryTable = table.render({
+                elem: '#factoryTable'
+                , id: 'factoryTable'
+                , url: 'getAppointmentList'
+                , method: 'GET'
+                , where: {
+                    docId: $('#docId').val()
+                }
+                , title: '客户表'
+                , height: '500'
+                , cols: [
+                    [
+                        {field: 'cusName', title: '客户名称'}
+                        , {field: 'time', title: '预约时间'}
+                        , {field: 'note', title: '病情备注'}
+                        , {
+                        field: 'status', title: '状态', templet: function (d) {
+                            if (d.status == 1) {
+                                return '待审批';
+                            } else if (d.status == 2) {
+                                return '通过';
+                            } else if (d.status == 3) {
+                                return '驳回';
+                            }
+                        }
+                    }
+                        , {field: 'opreate', title: '操作', align: 'center', toolbar: '#barDemo', width: 220}
+                    ]
+                ]
+                , page: true
+                , response: {
+                    statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+                }
+                , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.records //解析数据列表
+                    };
+                },
+                done: function (res, curr, count) {
+                    $('.layui-btn').css({'line-height': '-1px'});
+                }
+            });
+
+            //监听行工具事件
+            table.on('tool(factoryTable)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'del') {
+                    layer.open({
+                        content: ''
+                        , title: "审批"
+                        , btn: ['通过', '驳回']
+                        , yes: function (index, layero) {
+                            $.ajax({
+                                url: "updateAppointment",
+                                data: {"status": 2, "id": data.id},
+                                type: "PUT",
+                                dataType: "json",
+                                success: function (data) {
+                                    layer.msg('审批通过！', {icon: 6, time: 1500}, function () {
+                                        factoryTable.reload();
+                                    });
+                                },
+                                error: function (data) {
+                                    layer.msg(data.msg, {icon: 5, time: 1500});
+                                }
+                            });
+                            layer.close(index);
+                            //按钮【按钮一】的回调
+                        }
+                        , btn2: function (index, layero) {
+                            //按钮【按钮二】的回调
+                            $.ajax({
+                                url: "updateAppointment",
+                                data: {"status": 3, "id": data.id},
+                                type: "PUT",
+                                dataType: "json",
+                                success: function (data) {
+                                    layer.msg('驳回成功！', {icon: 6, time: 1500}, function () {
+                                        factoryTable.reload();
+                                    });
+                                },
+                                error: function (data) {
+                                    layer.msg(data.msg, {icon: 5, time: 1500});
+                                }
+                            });
+                            layer.close(index);
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                    });
+                    return false;
+                }
+            });
+
+
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上预约挂号系统</title>
+</head>
+<link rel="stylesheet" href="./styles/common.css">
+<link rel="stylesheet" href="./styles/index.css">
+<link rel="stylesheet" href="./styles/csslunbo.css">
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./lib/layui/css/layui.css">
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<body>
+<div class="top">
+    <div class="slideshow">
+        <div class="swiper-container" style="width: 100%;height: 350px;">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="./images/2.jpeg" height="350" width="1600"/>
+                </div>
+                <div class="swiper-slide"><img src="./images/3.jpeg" height="350" width="1600"/>
+                </div>
+                <div class="swiper-slide"><img src="./images/4.jpeg" height="350" width="1600"/>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>
+<div class="heng"></div>
+<div class="nav">
+    <ul>
+        <li><a href="./index.html" th:href="@{view?url=reception/index}">首页</a></li>
+        <li><a href="./doctorEnquiry.html" th:href="@{view?url=reception/doctorEnquiry}">医生查询</a></li>
+        <li th:if="${session.customer} != null" ><a href="./onLine.html" th:href="@{view?url=reception/onLine}">在线预约</a></li>
+        <li  th:if="${session.customer} != null" ><a href="publicInfo.html" th:href="@{view?url=reception/myAppointment}">我的预约</a></li>
+        <li><a href="./registered.html" th:href="@{view?url=reception/registered}">患者注册</a></li>
+    </ul>
+</div>
+
+<div id="enquiry">
+    <div class="content clearfix">
+        <div class="left fl">
+            <div class="list">
+                <div class="listTop">
+                    <div class="text">
+                        <img src="./images/huan.jpg" alt="">
+                        <span>我的预约</span>
+                    </div>
+                    <div class="enquiry">
+                        <div class="layui-input-inline">
+                            <select name="status" id="status">
+                                <option value="">请选择状态</option>
+                                <option value="1">待审批</option>
+                                <option value="2">通过</option>
+                                <option value="3">驳回</option>
+                            </select>
+                            <input class="btn1" type="button" id="search" value="搜索" style="width: 100px;">
+                        </div>
+                    </div>
+                </div>
+                <table class="layui-hide" id="factoryTable" lay-filter="factoryTable"></table>
+                <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="del">删除</a>
+                </script>
+                <!--<ul>
+                    <li v-for="(item,index) in myAppointList" :key="index">
+                        <p>就诊号：<span>{{item.indexNum}}</span></p>
+                        <p>医院名称：<span>{{item.hospitalName}}</span></p>
+                        <p>预约部门：<span>{{item.departmentName}}</span></p>
+                        <p>主治医生：<span>{{item.doctorName}}</span></p>
+                        <p>预约时间：<span>{{item.regTime}}</span></p>
+                        <p>就诊状态：<span>{{item.doctorReply}}</span></p>
+                        <p>医生留言：<span>{{item.doctorMessage}}</span></p>
+                    </li>
+                </ul>-->
+            </div>
+        </div>
+
+
+        <div class="right addImg fr">
+            <input type="hidden" id="cusId" th:value="${session.customer.id}">
+            <div class="login" id="loginInput" th:if="${session.customer} == null">
+                <ul>
+                    <li>
+                        账号：<input class="zhHao" type="text" id="account" placeholder="请输入用户名">
+                    </li>
+                    <li>
+                        密码：<input class="zhHao" type="password" id="password" placeholder="请输入密码">
+                    </li>
+                    <li>
+                        <input class="btn" type="button" id="login" value="登录">
+                        <input class="btn" type="button" value="注册">
+                    </li>
+                </ul>
+            </div>
+            <div class="userInfo" id="username" th:if="${session.customer} != null">
+                <ul>
+                    <li>
+                        <span>欢迎您：</span>
+                        <span>[[${session.customer.name}]]</span>
+                    </li>
+                    <li>
+                        <button id="logout">注销退出</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="myOn" id="myOnLine" th:if="${session.customer} != null">
+                <a href="myAppointment.html" th:href="@{view?url=reception/myAppointment}">
+                    <img src="./images/123.png" alt="">
+                </a>
+                <div>
+                    <p>我的预约</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="./script/jquery.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        layui.use(['table', 'form'], function () {
+            var $ = layui.$,
+                table = layui.table,
+                form = layui.form;
+
+            $('#login').on('click', function () {
+                if ($('#account').val() == '') {
+                    layer.msg('account！', {icon: 5, time: 1500});
+                    return false;
+                }
+                if ($('#password').val() == '') {
+                    layer.msg('密码不能为空！', {icon: 5, time: 1500});
+                    return false;
+                }
+                $.ajax({
+                    url: '/customer/login',
+                    type: 'GET',
+                    data: {
+                        userName: $('#account').val(),
+                        password: $('#password').val()
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+            });
+
+            $('#logout').on('click', function () {
+                $.ajax({
+                    url: '/customer/logout',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            location.href = 'view?url=reception/index';
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+            });
+
+            $('#search').on('click',function () {
+                factoryTable.reload({
+                    where: {
+                        status : $("#status").val(),
+                        cusId: $('#cusId').val()
+                    }
+                    , page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                });
+                return false;
+            });
+
+            var factoryTable = table.render({
+                elem: '#factoryTable'
+                , id: 'factoryTable'
+                , url: 'getAppointmentList'
+                , method: 'GET'
+                , where: {
+                    cusId: $('#cusId').val()
+                }
+                , title: '客户表'
+                , height: '500'
+                , cols: [
+                    [
+                        {field: 'docName', title: '医生名称'}
+                        , {field: 'time', title: '预约时间'}
+                        , {field: 'note', title: '病情备注'}
+                        , {
+                        field: 'status', title: '状态', templet: function (d) {
+                            if (d.status == 1) {
+                                return '待审批';
+                            } else if (d.status == 2) {
+                                return '通过';
+                            } else if (d.status == 3) {
+                                return '驳回';
+                            }
+                        }
+                    }
+                        , {field: 'opreate', title: '操作', align: 'center', toolbar: '#barDemo', width: 220}
+                    ]
+                ]
+                , page: true
+                , response: {
+                    statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+                }
+                , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "count": res.data.total, //解析数据长度
+                        "data": res.data.records //解析数据列表
+                    };
+                },
+                done: function (res, curr, count) {
+                    $('.layui-btn').css({'line-height': '-1px'});
+                }
+            });
+
+            //监听行工具事件
+            table.on('tool(factoryTable)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'del') {
+                    layer.confirm('确认要删除吗?', function (index) {
+                        $.ajax({
+                            url: 'deleteAppointment/'+data.id,
+                            type: 'DELETE',
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.success) {
+                                    layer.msg(data.msg, {icon: 6, time: 1500}, function () {
+                                        factoryTable.reload();
+                                    });
+                                } else {
+                                    layer.msg(res.msg, {icon: 5, time: 1000});
+                                }
+                            },
+                            error: function () {
+                                layer.msg('系统错误！', {
+                                    icon: 5
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+
+
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+* {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	list-style: none;
+	color: #333;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	font-size: 12px;
+	font-family: "Microsoft YaHei";
+	background-color: #F2F2F2;
+}
+
+.clearfix::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.pc {
+	font-size: 16px;
+}

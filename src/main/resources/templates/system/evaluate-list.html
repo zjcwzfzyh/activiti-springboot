@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+</head>
+<style>
+    .layui-table-body {
+        overflow-x: hidden;
+    }
+</style>
+<body>
+<div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">系统设置</a>
+                <a>
+                    <cite>评价标签管理</cite></a>
+            </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input type="text" name="dicName" id="dicName" placeholder="用户类型名称" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <button class="layui-btn" lay-submit="" id="searchDicName" lay-filter="searchDicName">
+                                <i class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-header">
+                        <button class="layui-btn" id="addDic">
+                            <i class="layui-icon"></i>添加
+                        </button>
+                </div>
+                <div class="layui-card-body ">
+
+                    <table class="layui-hide" id="evaluateTable" lay-filter="evaluateTable"></table>
+
+                    <script type="text/html" id="barDemo">
+                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    layui.use(['table', 'form'], function () {
+        var $ = layui.$,
+            table = layui.table,
+            form = layui.form;
+        var evaluateTable = table.render({
+            elem: '#evaluateTable'
+            , id: 'evaluateTable'
+            , url: 'getDictionaryList'
+            , method: 'GET'
+            , where: {
+                dicParentid : 2
+            }
+            , title: '评价标签表'
+            , cols: [
+                [
+                    {field: 'dicName',align:'center', title: '评价标签名称', width: 300}
+                    , {field: 'dicRemark',align:'center', title: '备注'}
+                    , {
+                    title: '状态',align:'center', field: 'dicStatus', width: 100, templet: function (d) {
+                        var state = "";
+                        if (d.dicStatus == 1) {
+                            state = "<input type='checkbox' value='" + d.id + "' id='status' lay-filter='stat' checked='checked' name='status'  lay-skin='switch' lay-text='启用|停用' >";
+                        }
+                        else {
+                            state = "<input type='checkbox' value='" + d.id + "' id='status' lay-filter='stat'  name='status'  lay-skin='switch' lay-text='启用|停用' >";
+                        }
+                        return state;
+
+                    }
+                }
+                    , {title: '操作',align:'center', toolbar: '#barDemo', width: 220}
+                ]]
+            , page: true
+            , response: {
+                statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+            }
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.records //解析数据列表
+                };
+            }
+        });
+
+        //条件查询
+        $("#searchDicName").on("click", function () {
+            evaluateTable.reload({
+                where: {
+                    dicParentid : 2,
+                    dicName : $('#dicName').val()
+                }
+                , page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            return false;
+        });
+
+        //添加客户信息
+        $('#addDic').on('click', function () {
+            layer.open({
+                type: 2,
+                content: 'view?url=system/evaluate-add',
+                title: '添加评价标签',
+                area: ['500px', '300px'],
+                btn: ['确定', '取消'],
+                yes: function (index, layero) {
+                    var submitID = 'add',
+                        submit = layero.find('iframe').contents().find('#' + submitID);
+                    submit.trigger('click');
+                },
+                success: function (layero, index) {
+                    var body = layer.getChildFrame('body', index);
+
+                }
+            });
+        });
+
+
+        //监听开关事件
+        form.on('switch(stat)', function (data) {
+            var contexts;
+            var x = data.elem.checked;//判断开关状态
+            if (x == true) {
+                contexts = "你确定要启动么";
+            } else {
+                contexts = "你确定要关闭么";
+            }
+            layer.open({
+                content: contexts
+                , btn: ['确定', '取消']
+                , yes: function (index, layero) {
+                    var state = 1;
+                    if (x == true) {
+                    } else {
+                        state = 2;
+                    }
+                    var arr = data.value.split(",");
+                    $.ajax({
+                        url: "updateDictionary",
+                        data: {"dicStatus": state, "id": data.value},
+                        type: "PUT",
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            layer.msg(data.msg, {icon: 6, time: 1500}, function () {
+                                evaluateTable.reload();
+                            });
+                        },
+                        error: function (data) {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    });
+                    data.elem.checked = x;
+                    form.render();
+                    layer.close(index);
+                    //按钮【按钮一】的回调
+                }
+                , btn2: function (index, layero) {
+                    //按钮【按钮二】的回调
+                    data.elem.checked = !x;
+                    form.render();
+                    layer.close(index);
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+                , cancel: function () {
+                    //右上角关闭回调
+                    data.elem.checked = !x;
+                    form.render();
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+            return false;
+        });
+
+
+        //监听行工具事件
+        table.on('tool(evaluateTable)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('确认要删除吗?', function (index) {
+                    $.ajax({
+                        url: 'deleteDictionary/'+data.id,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.success) {
+                                layer.msg(data.msg, {icon: 6, time: 1500}, function () {
+                                    evaluateTable.reload();
+                                });
+                            } else {
+                                layer.msg(res.msg, {icon: 5, time: 1000});
+                            }
+                        },
+                        error: function () {
+                            layer.msg('系统错误！', {
+                                icon: 5
+                            });
+                        }
+                    });
+                });
+            } else if (obj.event === 'edit') {
+                layer.open({
+                    type: 2,
+                    content: 'view?url=system/evaluate-edit',
+                    title: '编辑评价标签',
+                    area: ['500px', '300px'],
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        var submitID = 'edit',
+                            submit = layero.find('iframe').contents().find('#' + submitID);
+                        submit.trigger('click');
+                    },
+                    success: function (layero, index) {
+                        var body = layer.getChildFrame('body', index);
+                        console.log(data)
+                        body.find("#id").val(data.id);
+                        body.find("#dicName").val(data.dicName);
+                        body.find("#dicRemark").val(data.dicRemark);
+                    }
+                })
+            }
+        });
+    });
+</script>
+
+</html>

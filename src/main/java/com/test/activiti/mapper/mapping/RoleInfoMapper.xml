@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.activiti.mapper.RoleInfoMapper">
+    <select id="getRoleInfoListByUserId" resultType="com.test.activiti.entity.RoleInfo">
+        SELECT a.* FROM tbl_gb_role_info a
+        LEFT JOIN tbl_gb_user_role_related b ON a.id = b.role_id
+        WHERE b.user_id = #{userId}
+    </select>
+</mapper>

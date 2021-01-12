@@ -1,0 +1,86 @@
+*{
+    margin:0px;
+    padding:0px;
+}
+
+html,body{
+    height:100%;
+}
+body{
+    background-color: white;
+}
+.all{
+    width: 1200px;border: 2px solid #007DDB;margin: 0 auto;height:99%;
+}
+.top{
+    width: 100%;height:70px;
+    background-color: #007DDB;
+    line-height: 70px;
+    text-align: center;
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.top span{
+    padding: 0 15px;
+}
+.answer{
+    width: 100%;
+    height:calc(100% - 120px);
+    margin: 0 auto;
+    overflow-y: scroll;
+    padding-bottom: 50px;
+}
+
+/*题目答案 begin*/
+.question{
+    padding: 0px 30px;
+    font-weight: bold;
+    color: #353232;
+}
+.problemTitle{
+    display: inline-block;
+    font-size: 16px;
+    padding-top: 20px;
+}
+.type{
+    display: inline-block;
+    color: white;
+    background-color: #3aaffe;
+    padding: 10px 12px;
+    border-radius: 5px;
+    margin: 20px 0 0 20px;
+}
+.topic{
+    margin-left: 110px;
+}
+.option{
+    padding: 10px;
+    color: #474544;
+}
+.option p{
+    padding: 5px 0;
+}
+.topic b>span{
+    padding: 0 10px;
+}
+.text .problemTitle{
+    margin-bottom: 15px;
+}
+
+
+/*滚动条样式*/
+.answer::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+.answer::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(89, 134, 191, 0.93);
+}
+.answer::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,124 @@
+html, body {
+
+}
+
+.doctor {
+    width: 100%;
+    height: 700px;
+    text-align: center;
+    padding-top: 15%;
+    background: url(".././images/bg.jpg");
+    background-size: cover;
+}
+
+.doctor ul span {
+    color: red;
+    font-size: 14px;
+}
+
+.doctor ul li {
+    color: #ffffff;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    width: 30%;
+    margin: 0 auto;
+    font-weight: bold;
+}
+.doctor ul li  input{
+    border: none;
+}
+#dpInput{
+    height: 30px;
+    font-size: 16px;
+    border-radius: 3px;
+    padding-left: 3%;
+}
+.DL {
+    width: 15%;
+    height: 25px;
+    line-height: 25px;
+    cursor: pointer;
+
+}
+
+.dl {
+    margin: 0 5%;
+}
+
+.LED {
+    width: 100%;
+    height: auto;
+}
+
+.LED .list {
+    width: 70%;
+}
+
+.DR {
+    width: 20%;
+}
+
+.DR ul li:hover {
+    background: none;
+}
+
+.DR ul li {
+    font-size: 16px;
+    width: 90%;
+    text-align: right;
+}
+
+.DR ul li a {
+    color: #9A3A24;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+    margin: 0 10%;
+}
+
+.DR ul li button {
+    padding: 1%;
+    cursor: pointer;
+    font-weight: bold;
+    color: #9A3A24;
+}
+
+.information {
+    width: 30%;
+    float: right;
+    line-height: 40px;
+    font-size: 16px;
+}
+
+.information input {
+    border: none;
+    padding: 2% 3%;
+    background: #5E7AB9;
+    color: #ffffff;
+    width: 15%;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#patient {
+    height: 2rem;
+}
+
+.DR ul li span {
+    color: white;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+#realDoctor {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.text #inp {
+    width: 45%;
+    height: 35px;
+    margin-left: 1%;
+    padding-left: 3%;
+}

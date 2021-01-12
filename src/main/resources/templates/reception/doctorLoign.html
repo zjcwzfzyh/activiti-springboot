@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网上预约挂号系统</title>
+</head>
+<link rel="stylesheet" href="./styles/common.css">
+<link rel="stylesheet" href="./styles/cssDoctor.css">
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/xadmin.js"></script>
+<body>
+
+<div class="doctor" id="app">
+    <ul>
+        <li>
+            账号：<input id="userName" type="text">
+        </li>
+        <li>
+            密码：<input id="password" type="password">
+        </li>
+        <li>
+            <input class="DL dl" type="button" id="login" value="登录">
+            <input class="DL" type="button" id="reset" value="重置">
+        </li>
+    </ul>
+</div>
+
+
+<script type="text/javascript" src="./script/jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+        layui.use(['table', 'form', 'laydate'], function () {
+
+
+            $('#reset').on('click', function () {
+                $('#userName').val('');
+                $('#password').val('');
+            });
+
+            $('#login').on('click', function () {
+
+                if ($('#userName').val() == '') {
+                    layer.msg('账号不能为空！', {icon: 5, time: 1500});
+                    return false;
+                }
+                if ($('#password').val() == '') {
+                    layer.msg('密码不能为空！', {icon: 5, time: 1500});
+                    return false;
+                }
+
+                $.ajax({
+                    url: '/doctor/login',
+                    type: 'GET',
+                    data: {
+                        userName: $('#userName').val(),
+                        password: $('#password').val()
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            location.href = 'view?url=reception/doctorReservationInformation'
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+            });
+        });
+    });
+
+
+</script>
+
+</body>
+</html>

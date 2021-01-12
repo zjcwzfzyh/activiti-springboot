@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上预约挂号系统</title>
+</head>
+<link rel="stylesheet" href="./styles/common.css">
+<link rel="stylesheet" href="./styles/index.css">
+<link rel="stylesheet" href="./styles/csslunbo.css">
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./lib/layui/css/layui.css">
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<style type="text/css">
+    .bonds {
+        border: 1px solid #CCC;
+        text-align: left;
+        font-size: 16px;
+        font-weight: 700;
+    }
+</style>
+<body>
+<div id="login">
+    <div class="top">
+        <div class="slideshow">
+            <div class="swiper-container" style="width: 100%;height: 350px;">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="./images/2.jpeg" height="350" width="1600"/>
+                    </div>
+                    <div class="swiper-slide"><img src="./images/3.jpeg" height="350" width="1600"/>
+                    </div>
+                    <div class="swiper-slide"><img src="./images/4.jpeg" height="350" width="1600"/>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+    <div class="heng"></div>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html" th:href="@{view?url=reception/index}">首页</a></li>
+            <li><a href="./doctorEnquiry.html" th:href="@{view?url=reception/doctorEnquiry}">医生查询</a></li>
+            <li th:if="${session.customer} != null" ><a href="./onLine.html" th:href="@{view?url=reception/onLine}">在线预约</a></li>
+            <li  th:if="${session.customer} != null" ><a href="publicInfo.html" th:href="@{view?url=reception/myAppointment}">我的预约</a></li>
+            <li><a href="./registered.html" th:href="@{view?url=reception/registered}">患者注册</a></li>
+        </ul>
+    </div>
+
+    <div class="content clearfix">
+        <div class="leftHuan fl ">
+            <div class="listHuan">
+                <div class="listTop">
+                    <div class="text">
+                        <img src="./images/huanzhe.jpg" alt="">
+                        <span>患者注册</span>
+                    </div>
+                </div>
+                <div class="listBottom clearfix">
+                    <table class="rightPartContent" width="100%" cellpadding="0" cellspacing="0" border="0"
+                           align="center">
+                        <tr>
+                            <td class="bond">账号：</td>
+                            <td style="text-align: left;padding: 0 3%;">
+                                <input class="haun" id="account1" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bond">密码：</td>
+                            <td style="text-align: left;padding: 0 3%;">
+                                <input class="haun" id="password1" type="password">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bond">姓名：</td>
+                            <td style="text-align: left;padding: 0 3%;">
+                                <input class="haun" id="name" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bond">电话：</td>
+                            <td style="text-align: left;padding: 0 3%;">
+                                <input class="haun" id="phone" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bond">性别：</td>
+                            <td style="text-align: left;padding: 0 3%;">
+                                <select name="gender" id="gender">
+                                    <option value="1">男</option>
+                                    <option value="0">女</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bond">出生日期：</td>
+                            <td style="text-align: left;padding: 0 3%;">
+                                <input class="haun" id="birthday" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bond"></td>
+                            <td style="text-align: left;padding: 0 3%;">
+                                <input class="haun patient" id="sub" type="button" value="确定">
+                                <input class="haun patient" id="reset" type="button" value="重置">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="right addImg fr">
+            <div class="login" id="loginInput" th:if="${session.customer} == null">
+                <ul>
+                    <li>
+                        账号：<input class="zhHao" type="text" id="account" placeholder="请输入用户名">
+                    </li>
+                    <li>
+                        密码：<input class="zhHao" type="password" id="password" placeholder="请输入密码">
+                    </li>
+                    <li>
+                        <input class="btn" type="button" id="login1" value="登录">
+                        <input class="btn" type="button" value="注册">
+                    </li>
+                </ul>
+            </div>
+            <div class="userInfo" id="username" th:if="${session.customer} != null">
+                <ul>
+                    <li>
+                        <span>欢迎您：</span>
+                        <span>[[${session.customer.name}]]</span>
+                    </li>
+                    <li>
+                        <button id="logout">注销退出</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="myOn" id="myOnLine" th:if="${session.customer} != null">
+                <a href="myAppointment.html" th:href="@{view?url=reception/myAppointment}">
+                    <img src="./images/123.png" alt="">
+                </a>
+                <div>
+                    <p>我的预约</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="./script/jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+        layui.use(['table', 'form', 'laydate'], function () {
+            var $ = layui.$,
+                table = layui.table,
+                laydate = layui.laydate,
+                form = layui.form;
+
+            laydate.render({
+                elem: '#birthday'
+                ,type: 'date'
+                ,trigger: 'click'
+            });
+
+            $('#login1').on('click', function () {
+                if ($('#account').val() == '') {
+                    layer.msg('account！', {icon: 5, time: 1500});
+                    return false;
+                }
+                if ($('#password').val() == '') {
+                    layer.msg('密码不能为空！', {icon: 5, time: 1500});
+                    return false;
+                }
+                $.ajax({
+                    url: '/customer/login',
+                    type: 'GET',
+                    data: {
+                        userName: $('#account').val(),
+                        password: $('#password').val()
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+            });
+
+            $('#logout').on('click', function () {
+                $.ajax({
+                    url: '/customer/logout',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            location.href = 'view?url=reception/index';
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+            });
+
+            $('#reset').on('click', function () {
+                $('#account1').val('');
+                $('#password1').val('');
+                $('#name').val('');
+                $('#phone').val('');
+                $('#gender').val(1);
+                $('#birthday').val('');
+            });
+
+            $('#sub').on('click', function () {
+                if ($('#account1').val() == ''){
+                    layer.msg('请填写账号！', {icon: 5, time: 1500});
+                    return false;
+                }
+                if ($('#password1').val() == ''){
+                    layer.msg('请填写密码！', {icon: 5, time: 1500});
+                    return false;
+                }
+                if ($('#name').val() == ''){
+                    layer.msg('请填写姓名！', {icon: 5, time: 1500});
+                    return false;
+                }
+                if ($('#phone').val() == ''){
+                    layer.msg('请填写电话！', {icon: 5, time: 1500});
+                    return false;
+                }
+                if ($('#birthday').val() == ''){
+                    layer.msg('请填写出生日期！', {icon: 5, time: 1500});
+                    return false;
+                }
+
+
+                $.ajax({
+                    url: 'addCustomer',
+                    data: {
+                        userName: $('#account1').val(),
+                        password: $('#password1').val(),
+                        name: $('#name').val(),
+                        phone: $('#phone').val(),
+                        gender: $('#gender').val(),
+                        birthday: $('#birthday').val()
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            layer.msg(data.msg, {icon: 6, time: 1500}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg('账号重复！', {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+                return false;
+            });
+
+        });
+    });
+</script>
+</body>
+</html>

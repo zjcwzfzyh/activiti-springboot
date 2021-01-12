@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="x-admin-sm"  xmlns:th="http://www.thymeleaf.org">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+      <link rel="stylesheet" href="./css/font.css" th:href="@{/css/font.css}">
+      <link rel="stylesheet" href="./css/xadmin.css" th:href="@{/css/xadmin.css}">
+      <link rel="stylesheet" href="./css/eleTree.css" th:href="@{/css/eleTree.css}">
+      <link rel="stylesheet" href="./css/zTreeStyle.css" th:href="@{/css/zTreeStyle.css}">
+      <script src="./lib/layui/layui.js" charset="utf-8" th:src="@{/lib/layui/layui.js}"></script>
+      <script type="text/javascript" src="./js/xadmin.js" th:src="@{/js/xadmin.js}"></script>
+      <script src="./js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+      <script src="./js/jquery.ztree.all.min.js" th:src="@{/js/jquery.ztree.all.min.js}"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form action="" method="post" class="layui-form layui-form-pane" onkeydown="if(event.keyCode==13){return false}">
+                <input type="hidden" id="roleId">
+                <div class="layui-form-item">
+                    <label for="roleName" class="layui-form-label">
+                        <span class="x-red">*</span>角色名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="roleName" name="roleName" required="" lay-verify="required"
+                        autocomplete="off" class="layui-input" readonly>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">
+                        拥有权限
+                    </label>
+                    <div class="layui-input-block" >
+                        <div class="ztree" id="tree"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label for="roleDesc" class="layui-form-label">
+                        描述
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" id="roleDesc" name="roleDesc" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <button class="layui-btn" id="edit" type="button" lay-filter="edit" lay-submit>修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            layui.use(['layer', 'form'], function () {
+                var $ = layui.$,
+                    form = layui.form,
+                    layer = layui.layer;
+                var setting = {
+                    check: {
+                        enable: true,
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            rootPId: 0,
+                            pIdKey: "pid"
+                        }
+                    }
+                };
+                $.ajax({
+                    url : 'getPermissionInfoList',
+                    type : 'get',
+                    dataType: 'json',
+                    async : 'false',
+                    success : function(result) {
+                        if (result.success) {
+                            var ztree = $.fn.zTree.init($("#tree"),
+                                setting, result.data);
+                            //展开所有节点
+                            ztree.expandAll(true);
+                            $.ajax({
+                                url : 'getRolePermRelatedList/'+$('#roleId').val(),
+                                type : 'get',
+                                dataType: 'json',
+                                success : function (data) {
+                                    console.log(data)
+                                    var zTreeOjb = $.fn.zTree.getZTreeObj("tree");
+                                    var list = data.data;
+                                    for(var j=0;j<list.length;j++){
+                                        var node = zTreeOjb.getNodeByParam("id",list[j].permId);
+                                        node.checked = true;
+                                        zTreeOjb.updateNode(node);
+                                    }
+                                    form.render();
+                                }
+                            });
+
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                });
+                //监听提交
+                form.on('submit(edit)',function(data) {
+                    var zTreeObj = $.fn.zTree.getZTreeObj("tree");  //ztree的Id  zTreeId
+                    //获取复选框/单选框选中的节点：
+                    var checkedNodes = zTreeObj.getCheckedNodes();
+                    //权限表主键
+                    var permIds =[];
+                    for(var i = 0;i<checkedNodes.length;i++){
+                        permIds.push(checkedNodes[i].id)
+                    }
+                    var ids = permIds.join(",")
+                    if (ids == ''){
+                        layer.msg("请选择角色包含的权限！", {icon: 6,time:1000})
+                        return ;
+                    }
+                    $.ajax({
+                        url : 'updateRoleInfo',
+                        type : 'PUT',
+                        data : {
+                            id : $('#roleId').val(),
+                            roleName : $('#roleName').val(),
+                            roleDesc : $('#roleDesc').val(),
+                            permIds : ids
+                        },
+                        dataType : 'json',
+                        success : function(data){
+                            if(data.success) {
+                                layer.msg(data.msg, {icon: 6,time: 1500},function () {
+                                    parent.layui.table.reload('roleInfoTable');
+                                    //当你在iframe页面关闭自身时
+                                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                    parent.layer.close(index); //再执行关闭
+                                });
+                            }else {
+                                layer.msg(data.msg, {icon: 5,time: 1500});
+                            }
+                        },
+                        error: function() {
+                            layer.msg('系统错误！', {
+                                icon: 5
+                            });
+                        }
+                    })
+                });
+
+
+            })
+        });
+    </script>
+  </body>
+
+</html>

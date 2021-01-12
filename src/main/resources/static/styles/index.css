@@ -1,0 +1,592 @@
+.fr {
+    float: right;
+}
+
+.fl {
+    float: left;
+}
+
+.top {
+    width: 100%;
+}
+
+.top img {
+    width: 100%;
+}
+
+.heng {
+    width: 100%;
+    height: 5px;
+}
+
+.nav {
+    width: 100%;
+    height: 52px;
+    line-height: 50px;
+    background: #5E7AB9;
+}
+
+.nav ul li {
+    float: left;
+    width: 20%;
+}
+
+
+.nav ul li a {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.nav ul li:hover {
+    color: #ffffff;
+    background: #983A25;
+}
+
+/*内容*/
+.content {
+    width: 100%;
+    height: auto;
+}
+
+.content .left {
+    width: 70%;
+    height: auto;
+}
+
+.publicContent {
+    width: 100%;
+}
+
+.content .publicContent {
+    margin: 0 auto;
+}
+
+.PCT {
+    width: 70%;
+}
+#PCT{
+    height: auto;
+    text-align: center;
+    padding: 3% 4%;
+}
+.context{
+    text-align: justify;
+    text-indent:30px;
+    margin-top: 3%;
+}
+.context p{
+    font-size: 16px;
+}
+.content .right {
+    width: 30%;
+    height: 400px;
+}
+
+
+/*左边信息*/
+.list {
+    width: 96%;
+    margin: 0 auto;
+    height: auto;
+    background: #ffffff;
+    padding: 2% 0;
+}
+
+.listTop {
+    width: 90%;
+    margin: 0 auto;
+    padding: 1% 0 1% 0;
+}
+
+.text {
+    text-align: left;
+    border-bottom: 5px solid #3F55A0;
+    padding-bottom: 1%;
+    position: relative;
+}
+
+.text img{
+    width: 5%;
+    vertical-align: middle;
+}
+.text a {
+    font-size: 18px;
+    position: absolute;
+    right: 3%;
+    top: 30%;
+}
+.addImg{
+    text-align: right;
+    width: 50%;
+    float: left;
+}
+.addImg img {
+    width: 70%;
+    border: 1px solid #d3c9c9;
+    padding: 2%;
+}
+.text span {
+    font-size: 20px;
+    color: #000;
+    vertical-align: middle;
+}
+
+.listBottom {
+    width: 90%;
+    margin: 0 auto;
+    height: auto;
+    box-shadow: 0 0 3px #999;
+}
+
+.listBottom tr {
+    height: 40px;
+}
+
+.bond {
+    font-weight: bold;
+    background: #FAFAF1;
+}
+
+.bond1 {
+    font-weight: bold;
+    background: #FAFAF1;
+    width: 25%;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+}
+.bond2{
+    font-weight: bold;
+    background: #FAFAF1;
+    width: 20%;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+}
+
+.listBottom ul li {
+    height: 40px;
+    line-height: 40px;
+    border-bottom:1px solid #e3e5ed;
+}
+
+.listBottom ul li:hover {
+    background: #F2F2F2;
+}
+
+.listBottom ul li span {
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    display: inline-block;
+    width: 25%;
+    float: left;
+}
+.doctorAppoint ul li span{
+    width: 20%;
+}
+
+
+.listBottom tr td {
+    border: 1px solid #CCC;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.listBottom tr td span {
+    color: red;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.listBottom tr td a {
+    color: #9A3A24;
+}
+
+/*右边登录*/
+.login {
+    width: 90%;
+    margin: 60px auto;
+    padding: 22% 0;
+    box-shadow: 0 0 3px #999;
+    background: white;
+}
+
+.login ul li {
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.login ul p {
+    color: red;
+    font-size: 12px;
+    text-align: center;
+
+}
+
+.login ul li .zhHao {
+    background: none;
+    border: 1px solid #B9B9B9;
+    outline: none;
+    color: #333;
+    font-size: 14px;
+    border-radius: 3px;
+    height: 30px;
+    width: 45%;
+    padding-left: 5%;
+}
+
+.btn {
+    height: 30px;
+    width: 15%;
+    outline: none;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 3px;
+    margin: 0 15px;
+    cursor: pointer;
+    border: none;
+    background: #5E7AB9;
+}
+
+/*在线预约*/
+.userInfo {
+    width: 90%;
+    margin: 30px auto;
+    box-shadow: 0 0 3px #999;
+    position: relative;
+}
+.userInfo img {
+    width: 20%;
+    position: absolute;
+}
+.userInfo ul li {
+    width: 90%;
+    font-size: 20px;
+    text-align: right;
+}
+.userInfo ul li span{
+    font-weight: bold;
+}
+
+.userInfo ul li button {
+    border: none;
+    background: none;
+    color: #9A3A24;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.xianBottom {
+    width: 50%;
+    margin: 0 auto;
+    height: auto;
+    padding-bottom: 3%;
+    float: right;
+}
+
+.xianBottom ul li {
+    width: 90%;
+    text-align: center;
+    margin: 5% 0 0 0;
+    display: block;
+    font-size: 16px;
+}
+.xianBottom ul li  select {
+    height: 35px;
+    width: 46%;
+}
+
+.xianBottom ul span {
+    color: red;
+    font-size: 12px;
+    margin: 2% 0 0 0;
+}
+
+.xianBottom .put {
+    height: 30px;
+    width: 43%;
+    padding-left: 2%;
+}
+
+#txtBeginDate {
+    width: 190px;
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+}
+
+/*患者注册*/
+.leftHuan {
+    width: 70%;
+    height: 500px;
+}
+
+.listHuan {
+    width: 96%;
+    margin: 0 auto;
+    height: 500px;
+    background: #ffffff;
+}
+
+.haun {
+    width: 50%;
+    height: 25px;
+    padding-left: 2%;
+}
+
+.patient {
+    height: 30px;
+    width: 15%;
+    outline: none;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 3px;
+    margin: 0 15px;
+    cursor: pointer;
+    border: none;
+    background: #5E7AB9;
+}
+
+/*医生查询*/
+.img {
+    padding: 1% 2%;
+    border: 1px dotted #333;
+    width: 19% ;
+}
+
+.img p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 3%;
+}
+
+.Inform {
+    width: 67%;
+    height: auto;
+    margin-right: 3%;
+    border: 1px dotted #333;
+    text-align: left;
+    padding: 2% 3%;
+}
+
+.Inform ul li {
+    border-bottom: 1px dotted #333;
+    font-size: 16px;
+    line-height: 40px;
+}
+.Inform ul li span{
+    display: block;
+}
+
+.Inform p {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.hostinfor {
+    width: 86%;
+    margin: 0 auto;
+    height: 400px;
+    box-shadow: 0 0 3px #999;
+    padding: 2%;
+    overflow-y: scroll;
+}
+
+.hostinfor tr {
+    height: 40px;
+}
+
+.hostinfor tr td {
+    border: 1px solid #CCC;
+    text-align: center;
+    font-size: 16px;
+}
+
+.enquiry {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    padding: 2% 0 0 0;
+}
+
+.enquiry .doctor {
+    background: none;
+    border: 1px solid #B9B9B9;
+    outline: none;
+    color: #333;
+    font-size: 14px;
+    border-radius: 3px;
+    height: 30px;
+    width: 20%;
+    padding-left: 2%;
+}
+
+.btn1 {
+    height: 30px;
+    width: 10%;
+    outline: none;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 3px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: none;
+    background: #5E7AB9;
+}
+
+/*add*/
+.Add {
+    width: 90%;
+    margin: 0 auto;
+    height: 500px;
+    box-shadow: 0 0 3px #999;
+    overflow-y: scroll;
+}
+
+.dd {
+    width: 90%;
+    margin: 0 auto;
+    height: 300px;
+    box-shadow: 0 0 3px #999;
+}
+
+/*公告信息*/
+.height {
+    height:500px;
+    padding-top: 3%;
+    overflow-y: scroll;
+}
+.publicContent {
+    text-align: left;
+    text-indent: 30px;
+    padding: 0 4% 2%;
+    width: 90%;
+}
+.publicContent p{
+    font-size: 16px;
+    padding: 0 4% 2%;
+    margin-bottom: 3%;
+    border-bottom: 1px solid #333;
+}
+.dd ul li {
+    width: 90%;
+    margin: 0 auto;
+    height: auto;
+    line-height: 50px;
+    text-align: left;
+    padding-left: 10%;
+    border-bottom: 1px dotted #26559D;
+    cursor: pointer;
+}
+
+.dd ul li img {
+    width: 15px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.dd ul li span {
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+/*脚部*/
+.font {
+    width: 100%;
+    height: auto;
+    line-height: 30px;
+    background: #333A8B;
+    padding: 2% 0;
+}
+
+.font p {
+    text-align: center;
+    color: #ffffff;
+    font-size: 16px;
+}
+/*留言*/
+.doctLang{
+    padding: 3%;
+}
+.doctLang span{
+    display: inline-block;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    color: #333;
+    margin: 2% 0;
+}
+.liuYan{
+    width: 94%;
+    height: auto;
+    padding: 3%;
+    background: #918f8f;
+}
+.liuYan p{
+    font-size: 16px;
+    color: #ffffff ;
+    text-align: left;
+    line-height: 2;
+    text-indent: 30px;
+}
+
+/*医生查询*/
+.layui-input-inline{
+    font-size: 16px;
+}
+#doctorData{
+    width: 125px;
+    height: 30px;
+}
+
+/*我要预约*/
+.myOn {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 2%;
+}
+.myOn a img {
+    width: 30%;
+    border: 1px solid #d3c9c9;
+    padding: 2%;
+}
+
+/*患者的预约信息*/
+.listed ul li{
+    width: 96%;
+}
+.MyAppoint {
+    width: 90%;
+    margin: 0 auto;
+    padding: 2% 0 1% 0;
+    overflow: scroll;
+    height: 500px;
+    box-shadow: 0 0 3px #999;
+}
+.MyAppoint ul li{
+    float: left;
+    font-size: 16px;
+    text-align: left;
+    padding: 2%;
+    box-shadow: 0 0 3px #999;
+    margin: 1%;
+    width: 90%;
+    margin-left: 5%;
+}
+.MyAppoint ul li p{
+    line-height: 2;
+}
+#test5{
+    width: 45%;
+    height: 30px
+}

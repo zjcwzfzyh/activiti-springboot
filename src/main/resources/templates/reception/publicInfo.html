@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网上预约挂号系统</title>
+</head>
+<link rel="stylesheet" href="./styles/common.css">
+<link rel="stylesheet" href="./styles/index.css">
+<link rel="stylesheet" href="./styles/csslunbo.css">
+<body>
+<div id="public">
+    <div class="top">
+        <div class="slideshow">
+            <div class="swiper-container" style="width: 100%;height: 350px;">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="./images/2.jpeg" height="350" width="1600"/>
+                    </div>
+                    <div class="swiper-slide"><img src="./images/3.jpeg" height="350" width="1600" />
+                    </div>
+                    <div class="swiper-slide"><img src="./images/4.jpeg" height="350" width="1600" />
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+    <div class="heng"></div>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html">首页</a></li>
+            <li><a href="./doctorEnquiry.html">医生查询</a></li>
+            <li><a href="onLine.html">在线预约</a></li>
+            <li><a href="./publicInfo.html">公告信息</a></li>
+            <li><a href="./registered.html">患者注册</a></li>
+        </ul>
+    </div>
+
+    <div class="content clearfix">
+        <div class="left fl">
+            <div class="list">
+                <div class="listTop">
+                    <div class="text">
+                        <img src="./images/gg1.jpg" alt="">
+                        <span>公告信息</span>
+                    </div>
+                </div>
+                <div class="dd height clearfix">
+                    <div class="publicContent">
+
+                        <span v-for="(item,index) in publicList" :key="index">
+                            <h2 style="text-align: center">{{item.biaoti}}</h2><br>
+                            <h4 style="text-align: right;">发布时间：{{item.shijian}}</h4><br>
+                            <p>{{item.neirong}}</p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right fr">
+            <div class="login" id="loginInput">
+                <ul>
+                    <li>
+                        账号：<input class="zhHao" v-on:blur="checkUser" v-model="userLoginName"  type="text" placeholder="请输入用户名">
+                    </li>
+                        <p>{{errorLoginUser}}</p>
+                    <li>
+                        密码：<input class="zhHao" v-on:blur="checkPass" v-model="passLoginWord" type="password" placeholder="请输入密码">
+                    </li>
+                        <p>{{errorLoginPass}}</p>
+                    <li>
+                        <input class="btn" type="button" @click="checkLogin" value="登录">
+                        <input class="btn" type="button" @click="Register" value="注册">
+                    </li>
+                </ul>
+            </div>
+            <div class="userInfo" id="username">
+                <ul>
+                    <li>
+                        <span>欢迎您：</span>
+                        <span id="realUser">admin</span>
+                    </li>
+                    <li>
+                        <button  @click="cancelExit" value="注销退出">注销退出</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="myOn" id="myOnLine">
+                <a href="myAppointment.html">
+                    <img src="./images/123.png" alt="">
+                </a>
+                <div>
+                    <p>我的预约</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="font">
+        <p>联系方式&nbsp;电话：18292926771</p>
+        <p>版权所有&copy;陕西国际商贸学院</p>
+        <p>地址：陕西省咸阳市统一路世纪大道</p>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="./script/vue.js"></script>
+<script type="text/javascript" src="./script/jquery.js"></script>
+<script type="text/javascript" src="./script/toolJs.js"></script>
+<script type="text/javascript" src="./script/axios.min.js"></script>
+<script type="text/javascript" src="./script/constants.js"></script>
+<script type="text/javascript" src="./script/httpRequest.js"></script>
+<script type="text/javascript" src="./script/lunBo1.js"></script>
+<script type="text/javascript">
+    $(function () {
+        document.getElementById("realUser").innerHTML = show();
+    });
+    new Vue({
+        el: '#public',
+        data() {
+            return {
+                publicList:[],
+                userLoginName: '',
+                passLoginWord: '',
+                errorLoginUser:'',
+                errorLoginPass:'',
+            }
+        },
+        methods: {
+            async publicInformation() {
+                var that = this;
+                $.ajax({
+                    type: "POST",
+                    url: getUrl() + "/out/api/indexNotice",
+                    dataType: "json",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.code == 0) {
+                            console.log(result);
+                            that.publicList = result.dataList
+                        }
+                        if (result.code == 500) {
+                            alert(result.msg)
+                        }
+                    },
+                    error: function () {
+                        alert("请求失败")
+                    }
+                })
+            },
+            checkUser(){
+                if (this.userLoginName){
+                    this.errorLoginUser = ""
+                }else{
+                    this.errorLoginUser= "账号不能为空";
+                }
+            },
+            checkPass(){
+                if (this.passLoginWord){
+                    this.errorLoginPass = ""
+                }else{
+                    this.errorLoginPass= "密码不能为空";
+                }
+            },
+            checkLogin() {
+                localStorage.removeItem("token");
+                if (this.userLoginName && this.passLoginWord) {
+                    localStorage.setItem("userLoginName", this.userLoginName);
+                    var loginData = {
+                        username: this.userLoginName,
+                        password: this.passLoginWord
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: getUrl() + "/sys/login",
+                        data: loginData,
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                localStorage.setItem("token", result.token);
+                                document.getElementById("realUser").innerHTML = show();
+                                parent.location.href = '/hospitalProject/index.html';
+                            }
+                            if (result.code == 500) {
+                                alert(result.msg)
+                            }
+                        },
+                        error: function () {
+                            alert("请求失败")
+                        }
+                    });
+                } else {
+                    alert("用户和密码不能为空")
+                }
+            },
+            Register() {
+                parent.location.href = '/hospitalProject/registered.html';
+            },
+            cancelExit(){
+                localStorage.removeItem("token");
+                localStorage.removeItem("userLoginName");
+                parent.location.href = '/hospitalProject/index.html';
+            }
+        },
+        mounted() {
+            this.publicInformation();
+        }
+    })
+</script>
+<script type="text/javascript">
+    var mySwiper = new Swiper('.swiper-container', {
+        effect: 'fade',
+        autoplay: true,
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+        },
+    })
+</script>
+</body>
+</html>

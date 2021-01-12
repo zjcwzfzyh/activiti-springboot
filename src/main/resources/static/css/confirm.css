@@ -1,0 +1,81 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0 ;
+    padding: 0;
+    width: 100%;
+}
+.box{
+    width: 100%;
+    height: 100%;
+    /*background: url(img/bg01.jpg) center center;*/
+    min-width: 1200px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.test-box{
+    width: 1260px;
+    height: 640px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+.info{
+    height: 200px;
+    margin: 0 auto;
+    display: inline-block;
+    text-align: left;
+}
+.head{
+    height: 200px;
+    float: left;
+    text-align: center;
+    display: inline-block;
+}
+.head img{
+    width: 100px;
+    height: 135px;
+}
+.head-info{
+    height: 200px;
+    float: left;
+    padding: 0 20px;
+    display: inline-block;
+}
+.head-info p{
+    font-size: 14px;
+}
+.head-info b{
+    color: #323130;
+}
+/*注意事项*/
+.notice{
+    width: 1200px;
+    height: 400px;
+    margin: 0 auto;
+    border: 2px solid #a19e9b;
+    padding:10px 30px;
+    overflow-y: scroll;
+    text-align: left !important;
+}
+/*滚动条样式*/
+.notice::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+.notice::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(50, 49, 48, 0.93);
+}
+.notice::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+.notice p{
+    line-height: 30px;
+    font-size: 14px;
+    text-indent:0;
+}
+button{display: inline-block;height: 38px; margin-top:20px;line-height: 38px;padding: 0 18px;background-color: #009688;color: #fff;white-space: nowrap;text-align: center;font-size: 14px;border: none;border-radius: 2px;cursor: pointer;margin-left:10px;}

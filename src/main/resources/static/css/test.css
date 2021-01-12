@@ -1,0 +1,171 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+.test-box{
+    width: 100%;
+    height: 100%;
+    /*background: url(img/bg01.jpg) center center;*/
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: flex;
+    overflow:hidden;
+    margin:0;
+    padding:0;
+}
+/*左*/
+.test-survey{
+    width: 320px;
+    height: 100%;
+    border-right: 1px solid #cbc8c2;
+}
+.test-survey h3{
+    font-weight: bold;
+    color: #41403e;
+    line-height: 40px;
+}
+.test-survey b{
+    color: #41403e;
+}
+.test-survey p{
+    font-size: 14px !important;
+    line-height: 35px;
+    word-wrap:break-word;
+    word-break:break-all;
+}
+.item-l{
+    padding: 20px 0 0 40px;
+}
+.title{
+    height: 100px;
+    padding-top: 20px;
+    border-bottom: 1px solid #cbc8c2;
+}
+.examinee{
+    height: 330px;
+    border-bottom: 1px solid #cbc8c2;
+}
+.examineeImg{
+    width: 90px;
+}
+.progress{
+    height: 240px;
+}
+.timeNum{
+    color: #fff !important;
+    background-color: #3aaffe;
+    padding: 5px;
+    border-radius: 5px;
+}
+/*中*/
+.test-subject{
+    flex: 1;
+    height: 100%;
+    border-right: 1px solid #cbc8c2;
+    float: left;
+    padding: 30px;
+}
+.question{
+    padding: 0px 30px;
+    font-weight: bold;
+    color: #353232;
+    display: none;
+}
+.layui-form-item .layui-form-checkbox[lay-skin=primary] {
+    display: block !important;
+}
+.layui-form-checkbox[lay-skin=primary] span{
+    color: #353232 !important;
+}
+.input-left{
+    margin-left: 30px !important;
+}
+.blank .layui-form-label{
+    width: auto !important; ;
+    padding: 10px 0 !important;
+}
+.blank .layui-input-block{
+    margin-top: 20px !important;
+}
+.blank input{
+    width: 40% !important;
+    color: #353232 !important;
+}
+.problemTitle{
+    display: inline-block;
+    font-size: 16px;
+}
+.type{
+    display: inline-block;
+    color: white;
+    background-color: #3aaffe;
+    padding: 5px 12px;
+    border-radius: 5px;
+}
+.layui-form-radio {
+    display: block !important;
+}
+.layui-form-radio>i:hover, .layui-form-radioed>i {
+    color: #15adec !important;
+}
+.operation{
+    position: absolute;
+    bottom: 50px;
+}
+.over{
+    right: 430px;
+}
+/*右*/
+.test-title{
+    width: 320px;
+    height: 100%;
+    padding:30px;
+    overflow: auto;
+}
+.test-title h3{
+    color:#41403e ;
+    font-weight: bold;
+}
+.testList{
+    height: 90% !important;
+    overflow-y: scroll;
+}
+.item-r ul{
+    padding-left: 50px;
+}
+.item-r p{
+    line-height: 40px;
+}
+/*滚动条样式*/
+.testList::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+.testList::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(64, 185, 254, 0.93);
+}
+.testList::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+.testList ul{
+    list-style: none;
+    margin-left: -40px;
+}
+.testList li{
+    display: inline;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    float:left;
+    margin: 5px;
+    border: 1px solid #cbc8c2;
+    border-radius: 5px;
+}
+.clearfloat{clear:both;height:0;font-size:1px;line-height:0px;}
+
+

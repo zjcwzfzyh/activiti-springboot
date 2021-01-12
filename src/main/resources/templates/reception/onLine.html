@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上预约挂号系统</title>
+</head>
+<link rel="stylesheet" href="./styles/common.css">
+<link rel="stylesheet" href="./styles/index.css">
+<link rel="stylesheet" href="./styles/calendar.css">
+<link rel="stylesheet" href="./styles/csslunbo.css">
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="./js/xadmin.js"></script>
+<body>
+<div id="online">
+    <div class="top">
+        <div class="slideshow">
+            <div class="swiper-container" style="width: 100%;height: 350px;">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="./images/2.jpeg" height="350" width="1600"/>
+                    </div>
+                    <div class="swiper-slide"><img src="./images/3.jpeg" height="350" width="1600" />
+                    </div>
+                    <div class="swiper-slide"><img src="./images/4.jpeg" height="350" width="1600" />
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+    <div class="heng"></div>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html" th:href="@{view?url=reception/index}">首页</a></li>
+            <li><a href="./doctorEnquiry.html" th:href="@{view?url=reception/doctorEnquiry}">医生查询</a></li>
+            <li th:if="${session.customer} != null" ><a href="./onLine.html" th:href="@{view?url=reception/onLine}">在线预约</a></li>
+            <li  th:if="${session.customer} != null" ><a href="publicInfo.html" th:href="@{view?url=reception/myAppointment}">我的预约</a></li>
+            <li><a href="./registered.html" th:href="@{view?url=reception/registered}">患者注册</a></li>
+        </ul>
+    </div>
+
+    <div class="content clearfix">
+        <div class="left fl">
+            <div class="list">
+                <div class="listTop">
+                    <div class="text">
+                        <img src="./images/yuyue.jpg" alt="">
+                        <span>在线预约</span>
+                    </div>
+                </div>
+                <div class="addImg">
+                    <img src="./images/114.jpg" alt="">
+                </div>
+                <div class="xianBottom ">
+                    <ul>
+                        <li>
+                            医生姓名：
+                            <select name="docId" id="docId">
+                                <option value="">请选择医生</option>
+                            </select>
+                        </li>
+                        <li>
+                            病情备注： <input class="put" id="note" name="note" type="text"/>
+                        </li>
+                        <li>
+                            预约日期： <input type="text" id="test5">
+                        </li>
+                        <li>
+                            <input class="btn" type="button" id="confirm" value="确定"/>
+                            <input class="btn" type="button" id="res" value="重置"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="right addImg fr">
+            <input type="hidden" id="cusId" th:value="${session.customer}" >
+            <div class="login" id="loginInput" th:if="${session.customer} == null">
+                <ul>
+                    <li>
+                        账号：<input class="zhHao" type="text" id="account" placeholder="请输入用户名">
+                    </li>
+                    <li>
+                        密码：<input class="zhHao" type="password" id="password" placeholder="请输入密码">
+                    </li>
+                    <li>
+                        <input class="btn" type="button" id="login" value="登录">
+                        <input class="btn" type="button" value="注册">
+                    </li>
+                </ul>
+            </div>
+            <div class="userInfo" id="username" th:if="${session.customer} != null">
+                <ul>
+                    <li>
+                        <span>欢迎您：</span>
+                        <span>[[${session.customer.name}]]</span>
+                    </li>
+                    <li>
+                        <button id="logout">注销退出</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="myOn" id="myOnLine" th:if="${session.customer} != null">
+                <a href="myAppointment.html" th:href="@{view?url=reception/myAppointment}">
+                    <img src="./images/123.png" alt="">
+                </a>
+                <div>
+                    <p>我的预约</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="./script/jquery.js"></script>
+<script type="text/javascript">
+    Date.prototype.toLocaleStringTomorrow = function() {
+        var dateTime=new Date();
+        dateTime=dateTime.setDate(dateTime.getDate()+1);
+        dateTime=new Date(dateTime);
+        var y = dateTime.getFullYear();
+        var m = dateTime.getMonth()+1;
+        m = m<10?'0'+m:m;
+        var d = dateTime.getDate();
+        d = d<10?("0"+d):d;
+        return y+"-"+m+"-"+d;
+    }
+    $(function () {
+        layui.use(['table', 'form', 'laydate', 'layer'], function () {
+            var $ = layui.$,
+                table = layui.table,
+                laydate = layui.laydate,
+                layer = layui.layer,
+                form = layui.form;
+
+            var tomorrowTime = (new Date()).toLocaleStringTomorrow();
+            laydate.render({
+                elem: '#test5'
+                ,type: 'datetime'
+                ,min: tomorrowTime // 这里是设置最小日期
+                ,trigger: 'click'
+            });
+
+
+            function getNowFormatDate() {
+
+                var date = new Date( );
+                var seperator1 = "-";
+                var seperator2 = ":";
+                var month = date.getMonth() + 1;
+                var strDate = date.getDate();
+                if (month >= 1 && month <= 9) {
+                    month = "0" + month;
+                }
+                if (strDate >= 0 && strDate <= 9) {
+                    strDate = "0" + strDate;
+                }
+                var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                    + " " + date.getHours() + seperator2 + date.getMinutes()
+                    + seperator2 + date.getSeconds();
+                return currentdate;
+            }
+
+
+            $('#confirm').on('click', function () {
+               if ($('#cusId').val() == ''){
+                   layer.msg('请登录系统！', {icon: 5, time: 1500});
+                   return false;
+               }
+                if ($('#docId').val() == ''){
+                    layer.msg('请选择医生！', {icon: 5, time: 1500});
+                    return false;
+                }
+                if ($('#test5').val() == ''){
+                    layer.msg('请选择预约时间！', {icon: 5, time: 1500});
+                    return false;
+                }
+                $.ajax({
+                    url: 'addAppointment',
+                    type: 'POST',
+                    data: {
+                        docId: $('#docId').val(),
+                        note: $('#note').val(),
+                        time: $('#test5').val()
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            layer.msg('预约成功！', {icon: 6, time: 1500},function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+            });
+
+            $('#login').on('click', function () {
+                if ($('#account').val() == '') {
+                    layer.msg('account！', {icon: 5, time: 1500});
+                    return false;
+                }
+                if ($('#password').val() == '') {
+                    layer.msg('密码不能为空！', {icon: 5, time: 1500});
+                    return false;
+                }
+                $.ajax({
+                    url: '/customer/login',
+                    type: 'GET',
+                    data: {
+                        userName: $('#account').val(),
+                        password: $('#password').val()
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+            });
+
+            $('#logout').on('click', function () {
+                $.ajax({
+                    url: '/customer/logout',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            location.href = 'view?url=reception/index';
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    },
+                    error: function () {
+                        layer.msg('系统错误！', {
+                            icon: 5
+                        });
+                    }
+                });
+            });
+
+            $.ajax({
+                url: '/doctor/getList',
+                type: 'GET',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    if (data.success) {
+                        $.each(data.data,function (key,val) {
+                            $("#docId").append("<option value='"+val.id+"'>"+val.name+"</option>")
+                        });
+                        form.render('select');
+                    } else {
+                        layer.msg(data.msg, {icon: 5,time: 1500});
+                    }
+                },
+                error: function () {
+                    layer.msg('系统错误！', {
+                        icon: 5
+                    });
+
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>

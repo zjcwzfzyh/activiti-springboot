@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+</head>
+<style>
+    td[data-field="opreate"] .layui-table-cell {
+        height: 30px;
+        overflow: inherit;
+    }
+</style>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input type="text" name="name" id="name" placeholder="姓名" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <button class="layui-btn" lay-submit="" id="searchFactory" lay-filter="searchFactory"><i
+                                    class="layui-icon">&#xe615;</i></button>
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <a class="layui-btn" id="addFac"><i class="layui-icon"></i>添加</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-hide" id="factoryTable" lay-filter="factoryTable"></table>
+                    <script type="text/html" id="barDemo">
+                        <a class="layui-btn layui-btn-warm" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger" lay-event="del">删除</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    layui.use(['table', 'form'], function () {
+        var $ = layui.$,
+            table = layui.table,
+            form = layui.form;
+        var factoryTable = table.render({
+            elem: '#factoryTable'
+            , id: 'factoryTable'
+            , url: 'getDoctorList'
+            , method: 'GET'
+            , title: '客户表'
+            , cols: [
+                [
+                    {field: 'name', title: '姓名'}
+                    , {field: 'phone', title: '联系电话'}
+                    , {
+                    field: 'gender', title: '性别', templet: function (d) {
+                        if (d.gender == 1) {
+                            return "男";
+                        } else {
+                            return "女";
+                        }
+                    }
+                }
+                    , {field: 'deObj', title: '所在科室'}
+                    , {field: 'position', title: '职位'}
+                    , {field: 'experience', title: '工作经验'}
+                    , {field: 'goodAt', title: '擅长'}
+                    , {field: 'description', title: '介绍'}
+                    , {
+                    field: 'path', title: '图片', templet: function (d) {
+                        if (d.path != '') {
+                            return '<img class="layui-upload-img" id="demo1" src="/image/' + d.path + '" style="width: 100px; height: 100px">';
+                        }
+                    }
+                }
+                    , {
+                    title: '状态', align: 'center', field: 'dicStatus', width: 100, templet: function (d) {
+                        var state = "";
+                        if (d.status == 1) {
+                            state = "<input type='checkbox' value='" + d.id + "' id='status' lay-filter='stat' checked='checked' name='status'  lay-skin='switch' lay-text='正常|停诊' >";
+                        } else {
+                            state = "<input type='checkbox' value='" + d.id + "' id='status' lay-filter='stat'  name='status'  lay-skin='switch' lay-text='正常|停诊' >";
+                        }
+                        return state;
+
+                    }
+                }
+                    , {field: 'opreate', title: '操作', align: 'center', toolbar: '#barDemo', width: 220}
+                ]
+            ]
+            , page: true
+            , response: {
+                statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+            }
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.records //解析数据列表
+                };
+            },
+            done: function (res, curr, count) {
+                $('.layui-table-cell').css({'height': 'auto'});
+            }
+        });
+
+        //条件查询
+        $("#searchFactory").on("click", function () {
+            factoryTable.reload({
+                where: {
+                    name: $('#name').val()
+                }
+                , page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            return false;
+        });
+
+        //添加客户信息
+        $('#addFac').on('click', function () {
+            layer.open({
+                type: 2,
+                content: 'view?url=doctor/doctor-add',
+                title: '添加医院',
+                area: ['700px', '700px'],
+                btn: ['确定', '取消'],
+                yes: function (index, layero) {
+                    var submitID = 'add',
+                        submit = layero.find('iframe').contents().find('#' + submitID);
+                    submit.trigger('click');
+                },
+                success: function (layero, index) {
+                    var body = layer.getChildFrame('body', index);
+
+                }
+            });
+        });
+
+        //监听开关事件
+        form.on('switch(stat)', function (data) {
+            var contexts;
+            var x = data.elem.checked;//判断开关状态
+            if (x == true) {
+                contexts = "你确定要切换吗？";
+            } else {
+                contexts = "你确定要切换吗？";
+            }
+            layer.open({
+                content: contexts
+                , btn: ['确定', '取消']
+                , yes: function (index, layero) {
+                    var state = 1;
+                    if (x == true) {
+                    } else {
+                        state = 2;
+                    }
+                    var arr = data.value.split(",");
+                    $.ajax({
+                        url: "updateDoctor",
+                        data: {"status": state, "id": data.value},
+                        type: "PUT",
+                        dataType: "json",
+                        success: function (data) {
+                            layer.msg(data.msg, {icon: 6, time: 1500}, function () {
+                                factoryTable.reload();
+                            });
+                        },
+                        error: function (data) {
+                            layer.msg(data.msg, {icon: 5, time: 1500});
+                        }
+                    });
+                    data.elem.checked = x;
+                    form.render();
+                    layer.close(index);
+                    //按钮【按钮一】的回调
+                }
+                , btn2: function (index, layero) {
+                    //按钮【按钮二】的回调
+                    data.elem.checked = !x;
+                    form.render();
+                    layer.close(index);
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+                , cancel: function () {
+                    //右上角关闭回调
+                    data.elem.checked = !x;
+                    form.render();
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+            return false;
+        });
+
+
+        //监听行工具事件
+        table.on('tool(factoryTable)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('确认要删除吗?', function (index) {
+                    $.ajax({
+                        url: 'deleteDoctor/' + data.id,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.success) {
+                                layer.msg(data.msg, {icon: 6, time: 1500}, function () {
+                                    factoryTable.reload();
+                                });
+                            } else {
+                                layer.msg(res.msg, {icon: 5, time: 1000});
+                            }
+                        },
+                        error: function () {
+                            layer.msg('系统错误！', {
+                                icon: 5
+                            });
+                        }
+                    });
+                });
+            } else if (obj.event === 'edit') {
+                layer.open({
+                    type: 2,
+                    content: 'view?url=doctor/doctor-edit',
+                    title: '编辑医院',
+                    area: ['700px', '700px'],
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        var submitID = 'edit',
+                            submit = layero.find('iframe').contents().find('#' + submitID);
+                        submit.trigger('click');
+                    },
+                    success: function (layero, index) {
+                        var body = layer.getChildFrame('body', index);
+                        body.find("#id").val(data.id);
+                        body.find("#name").val(data.name);
+                        body.find("#phone").val(data.phone);
+                        body.find("#path").val(data.path);
+                        body.find("#demo1").attr('src', '/image/' + data.path);
+                        body.find("#gender").val(data.gender);
+                        body.find("#deObj1").val(data.deObj);
+                        body.find("#position").val(data.position);
+                        body.find("#experience").val(data.experience);
+                        body.find("#goodAt").val(data.goodAt);
+                        body.find("#description").val(data.description);
+                        body.find("#hosId1").val(data.hosId);
+                        body.find("#userName").val(data.userName);
+                    }
+                })
+            }
+        });
+    });
+</script>
+
+</html>
