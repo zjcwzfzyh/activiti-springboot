@@ -1,5 +1,8 @@
 package com.test.activiti;
 
+import com.test.activiti.service.IDictionaryService;
+import com.test.activiti.service.IRoleInfoService;
+import com.test.activiti.service.IUserInfoService;
 import org.activiti.api.process.model.ProcessDefinition;
 import org.activiti.api.process.model.ProcessInstance;
 import org.activiti.api.process.model.builders.ProcessPayloadBuilder;
@@ -19,6 +22,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ActivitiSpringbootApplicationTests {
 
+    @Autowired(required = false)
+    public IRoleInfoService roleInfoService;
     @Autowired
     private ProcessRuntime processRuntime;
     @Autowired
@@ -70,4 +75,17 @@ public class ActivitiSpringbootApplicationTests {
             System.out.println("任务："+taskPage2.getContent());
         }
     }
+
+    @Autowired
+    private IDictionaryService dictionaryService;
+    @Autowired
+    private IUserInfoService userInfoService;
+    @Test
+    public void testTransectional(){
+        roleInfoService.test();
+//        dictionaryService.test();
+//        userInfoService.test();
+        System.out.println("测试成功！");
+    }
+
 }

@@ -89,4 +89,7 @@ public interface IUserInfoService extends IService<UserInfo> {
      * @author : aaa
      */
     List<Object> getUserInfoById(Long id);
+
+
+    void test();
 }

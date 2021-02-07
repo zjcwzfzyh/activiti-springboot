@@ -132,4 +132,18 @@ public class RoleInfoServiceImpl extends ServiceImpl<RoleInfoMapper, RoleInfo> i
     public List<RoleInfo> getRoleInfoListByUserId(Long userId) {
         return roleInfoMapper.getRoleInfoListByUserId(userId);
     }
+
+
+    @Override
+    @Transactional
+    public void test() {
+        roleInfoMapper.insert(new RoleInfo().setRoleName("test").setRoleDesc("用于测试事务"));
+//        int i = 10/0;
+        RoleInfo roleInfo = roleInfoMapper.selectById(10000);
+        Long id = roleInfo.getId();
+
+        roleInfoMapper.insert(new RoleInfo().setRoleName("test1").setRoleDesc("用于测试事务1"));
+    }
+
+
 }

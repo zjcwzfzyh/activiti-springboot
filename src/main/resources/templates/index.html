@@ -50,88 +50,52 @@
 <div class="left-nav">
     <div id="side-nav">
         <ul id="nav">
-            <shiro:hasPermission name="manager:view">
-                <li>
-                    <a href="javascript:;">
-                        <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe6b8;</i>
-                        <cite>用户管理</cite>
-                        <i class="iconfont nav_right">&#xe697;</i></a>
-                    <ul class="sub-menu">
-                        <shiro:hasPermission name="manager:user:view">
-                            <li>
-                                <a onclick="xadmin.add_tab('用户列表','view?url=user/user-list')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>用户列表</cite></a>
-                            </li>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="manager:role:view">
-                            <li>
-                                <a onclick="xadmin.add_tab('角色管理','view?url=role/role-list')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>角色管理</cite></a>
-                            </li>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="manager:permission:view">
-                            <li>
-                                <a onclick="xadmin.add_tab('权限分类','view?url=permission/permission-list')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>权限分类</cite></a>
-                            </li>
-                        </shiro:hasPermission>
-                    </ul>
-                </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="cus:view">
-                <li>
-                    <a href="javascript:;">
-                        <i class="iconfont left-nav-li" lay-tips="客户管理">&#xe6b8;</i>
-                        <cite>客户管理</cite>
-                        <i class="iconfont nav_right">&#xe697;</i></a>
-                    <shiro:hasPermission name="cus:info:view">
-                        <ul class="sub-menu">
-                            <li>
-                                <a onclick="xadmin.add_tab('客户列表','view?url=customer/customer-list')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>客户列表</cite></a>
-                            </li>
-                        </ul>
-                    </shiro:hasPermission>
-                </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="hospital:view">
-                <li>
-                    <a href="javascript:;">
-                        <i class="iconfont left-nav-li" lay-tips="医院管理">&#xe6b8;</i>
-                        <cite>医院管理</cite>
-                        <i class="iconfont nav_right">&#xe697;</i></a>
-                    <shiro:hasPermission name="hospital:info:view">
-                        <ul class="sub-menu">
-                            <li>
-                                <a onclick="xadmin.add_tab('医院列表','view?url=hospital/hospital-list')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>医院列表</cite></a>
-                            </li>
-                        </ul>
-                    </shiro:hasPermission>
-                </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="doctor:view">
-                <li>
-                    <a href="javascript:;">
-                        <i class="iconfont left-nav-li" lay-tips="医生管理">&#xe6b8;</i>
-                        <cite>医生管理</cite>
-                        <i class="iconfont nav_right">&#xe697;</i></a>
-                    <shiro:hasPermission name="doctor:info:view">
-                        <ul class="sub-menu">
-                            <li>
-                                <a onclick="xadmin.add_tab('医生列表','view?url=doctor/doctor-list')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>医生列表</cite></a>
-                            </li>
-                        </ul>
-                    </shiro:hasPermission>
-                </li>
-            </shiro:hasPermission>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe6b8;</i>
+                    <cite>用户管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('用户列表','view?url=user/user-list')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>用户列表</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('角色管理','view?url=role/role-list')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>角色管理</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('权限分类','view?url=permission/permission-list')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>权限分类</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="请假单管理">&#xe6b8;</i>
+                    <cite>请假单管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('请假单列表','view?url=form/form-list')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>请假单列表</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('任务列表','view?url=task/task-list')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>任务列表</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('处理任务列表','view?url=history/history-list')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>处理任务列表</cite></a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>

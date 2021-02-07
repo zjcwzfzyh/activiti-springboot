@@ -62,4 +62,6 @@ public interface IRoleInfoService extends IService<RoleInfo> {
 
     List<RoleInfo> getRoleInfoListByUserId(Long userId);
 
+
+    void test();
 }

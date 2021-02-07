@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -34,6 +36,7 @@ public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty(value = "用户主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -57,6 +60,12 @@ public class UserInfo implements Serializable {
     @ApiModelProperty(value = "用户姓名")
     @TableField("name")
     private String name;
+
+    @ApiModelProperty(value = "0 普通员工 1 部门经理 2 总经理")
+    @TableField("position")
+    private Integer position;
+
+
 
     @ApiModelProperty(value = "开始时间")
     @TableField(exist = false)

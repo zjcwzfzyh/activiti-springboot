@@ -131,4 +131,10 @@ public class RoleInfoController {
         return responseResult;
     }
 
+    @GetMapping("/roleTest")
+    public String test(){
+        roleInfoService.test();
+        return "测试！";
+    }
+
 }

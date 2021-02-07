@@ -61,6 +61,25 @@
         var form = layui.form;
         var table = layui.table;
 
+        $.ajax({
+            url: 'testLong',
+            type: 'DELETE',
+            dataType: 'json',
+            success: function(data){
+                if(data.success) {
+                    console.log(data.data)
+                }else {
+                    layer.msg(res.msg,{icon:5,time:1000});
+                }
+            },
+            error: function () {
+
+                layer.msg('系统错误！', {
+                    icon: 5
+                });
+            }
+        });
+
         //执行一个laydate实例
         laydate.render({
             elem: '#start' //指定元素
@@ -100,6 +119,8 @@
                 statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
             }
             ,parseData: function(res){ //将原始数据解析成 table 组件所规定的数据
+                console.log(123)
+                console.log(res)
                 return {
                     "code": res.code, //解析接口状态
                     "msg": res.msg, //解析提示文本

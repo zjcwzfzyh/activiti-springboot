@@ -36,6 +36,13 @@ public class UserInfoController {
     @Autowired
     private IRoleInfoService roleInfoService;
 
+    @RequestMapping("/testLong")
+    public ResponseResult testLong(){
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(1143324237579165697L);
+        return ResponseResult.success(userInfo);
+    }
+
     /**
      * @Description : 跳转到添加用户页面
      * @methodName : toAddUserInfoPage

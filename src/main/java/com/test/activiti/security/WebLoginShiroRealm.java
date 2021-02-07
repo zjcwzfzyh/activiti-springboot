@@ -20,6 +20,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 
@@ -32,10 +33,13 @@ public class WebLoginShiroRealm extends AuthorizingRealm {
 
     private static Log log = LogFactory.getLog(WebLoginShiroRealm.class);
 
+    @Lazy
     @Autowired
     private IUserInfoService userInfoService;
+    @Lazy
     @Autowired
     private IRoleInfoService roleInfoService;
+    @Lazy
     @Autowired
     private IPermissionInfoService permissionInfoService;
 

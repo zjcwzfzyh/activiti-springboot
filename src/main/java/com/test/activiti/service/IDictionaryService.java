@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-05-07
  */
 public interface IDictionaryService extends IService<Dictionary> {
-
+    void test();
 }

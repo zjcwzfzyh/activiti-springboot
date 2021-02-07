@@ -74,7 +74,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
      * @author : aaa
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean addUserInfo(UserInfo userInfo, String[] roleIds) {
         userInfo.setPassword(MD5Util.getMD5(userInfo.getPassword())).setCreateTime(LocalDateTime.now());
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
@@ -192,5 +192,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         list.add(userInfo);
         list.add(roleInfos);
         return list;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void test() {
+        userInfoMapper.insert(new UserInfo().setName("测试数据").setUserName("测试数据"));
+        int i = 1/0;
     }
 }
